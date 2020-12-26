@@ -83,7 +83,7 @@
     "event-source-polyfill": "0.0.7",
     "eventsource": "^0.2.1",
     "lodash": "^4.0.1",
-    "payshares-base": "^0.7.6",
+    "payshares-base": "git://github.com/payshares/js-payshares-base.git#170784ed3101f67add5181a4d01d4ef1da6e96cb",
     "toml": "^2.3.0"
   }
 }
