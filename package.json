@@ -1,7 +1,7 @@
 {
-  "name": "stellar-sdk",
+  "name": "payshares-sdk",
   "version": "0.8.0",
-  "description": "stellar-sdk is a library for working with the Stellar Horizon server.",
+  "description": "payshares-sdk is a library for working with the Payshares Horizon server.",
   "main": "lib/index.js",
   "scripts": {
     "test": "babel-node ./node_modules/.bin/gulp test",
@@ -11,21 +11,21 @@
     "postversion": "git push && git push --tags"
   },
   "keywords": [
-    "stellar"
+    "payshares"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stellar/js-stellar-sdk.git"
+    "url": "https://github.com/payshares/js-payshares-sdk.git"
   },
   "engines": {
     "node": ">=0.10 <=4"
   },
-  "author": "Stellar Development Foundation <hello@stellar.org>",
+  "author": "Stellar Development Foundation <hello@payshares.org>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/stellar/js-stellar-sdk/issues"
+    "url": "https://github.com/payshares/js-payshares-sdk/issues"
   },
-  "homepage": "https://github.com/stellar/js-stellar-sdk",
+  "homepage": "https://github.com/payshares/js-payshares-sdk",
   "devDependencies": {
     "babel": "~5.8.23",
     "babel-core": "~5.8.25",
@@ -83,7 +83,7 @@
     "event-source-polyfill": "0.0.7",
     "eventsource": "^0.2.1",
     "lodash": "^4.0.1",
-    "stellar-base": "^0.7.6",
+    "payshares-base": "^0.7.6",
     "toml": "^2.3.0"
   }
 }

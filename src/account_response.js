@@ -1,4 +1,4 @@
-import {Account as BaseAccount} from "stellar-base";
+import {Account as BaseAccount} from "payshares-base";
 import forIn from "lodash/forIn";
 
 /**
@@ -8,7 +8,7 @@ import forIn from "lodash/forIn";
  * The balances section in the returned JSON will also list all the trust lines this account has set up.
  * It also contains {@link Account} object and exposes it's methods so can be used in {@link TransactionBuilder}.
  *
- * @see [Account Details](https://www.stellar.org/developers/horizon/reference/accounts-single.html)
+ * @see [Account Details](https://www.payshares.org/developers/horizon/reference/accounts-single.html)
  * @param {string} response Response from horizon account endpoint.
  * @returns {AccountResponse}
  */
@@ -22,7 +22,7 @@ export class AccountResponse {
     }
 
     /**
-     * Returns Stellar account ID, ex. `GB3KJPLFUYN5VL6R3GU3EGCGVCKFDSD7BEDX42HWG5BWFKB3KQGJJRMA`
+     * Returns Payshares account ID, ex. `GB3KJPLFUYN5VL6R3GU3EGCGVCKFDSD7BEDX42HWG5BWFKB3KQGJJRMA`
      * @returns {string}
      */
     accountId() {

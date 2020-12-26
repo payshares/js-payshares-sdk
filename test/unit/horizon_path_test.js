@@ -2,8 +2,8 @@ describe("horizon path tests", function () {
 
   beforeEach(function () {
     this.axiosMock = sinon.mock(axios);
-    StellarSdk.Config.setDefault();
-    StellarSdk.Network.useTestNetwork();
+    PaysharesSdk.Config.setDefault();
+    PaysharesSdk.Network.useTestNetwork();
   });
 
   afterEach(function () {
@@ -13,7 +13,7 @@ describe("horizon path tests", function () {
 
   function test_horizon_paths(serverUrl) {
 
-    let server = new StellarSdk.Server(serverUrl);
+    let server = new PaysharesSdk.Server(serverUrl);
 
     let randomResult = {
       data: {
@@ -58,13 +58,13 @@ describe("horizon path tests", function () {
     it("server.submitTransaction() " + serverUrl, function (done) {
       randomResult.endpoint = "post";
 
-      let keypair = StellarSdk.Keypair.random();
-      let account = new StellarSdk.Account(keypair.publicKey(), "56199647068161");
+      let keypair = PaysharesSdk.Keypair.random();
+      let account = new PaysharesSdk.Account(keypair.publicKey(), "56199647068161");
       
-      let fakeTransaction = new StellarSdk.TransactionBuilder(account)
-        .addOperation(StellarSdk.Operation.payment({
+      let fakeTransaction = new PaysharesSdk.TransactionBuilder(account)
+        .addOperation(PaysharesSdk.Operation.payment({
           destination: keypair.publicKey(),
-          asset: StellarSdk.Asset.native(),
+          asset: PaysharesSdk.Asset.native(),
           amount: "100.50"
         }))
         .build();

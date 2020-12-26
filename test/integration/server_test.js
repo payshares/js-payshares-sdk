@@ -4,12 +4,12 @@ describe("integration tests", function () {
   this.timeout(TIMEOUT);
   this.slow(TIMEOUT/2);
 
-  StellarSdk.Network.useTestNetwork();
+  PaysharesSdk.Network.useTestNetwork();
 
   // Docker
-  let server = new StellarSdk.Server('http://127.0.0.1:8000', {allowHttp: true});
-  //let server = new StellarSdk.Server('http://192.168.59.103:32773', {allowHttp: true});
-  let master = StellarSdk.Keypair.master();
+  let server = new PaysharesSdk.Server('http://127.0.0.1:8000', {allowHttp: true});
+  //let server = new PaysharesSdk.Server('http://192.168.59.103:32773', {allowHttp: true});
+  let master = PaysharesSdk.Keypair.master();
 
   before(function(done) {
     this.timeout(60*1000);
@@ -31,8 +31,8 @@ describe("integration tests", function () {
   function createNewAccount(accountId) {
     return server.loadAccount(master.publicKey())
       .then(source => {
-        let tx = new StellarSdk.TransactionBuilder(source)
-          .addOperation(StellarSdk.Operation.createAccount({
+        let tx = new PaysharesSdk.TransactionBuilder(source)
+          .addOperation(PaysharesSdk.Operation.createAccount({
             destination: accountId,
             startingBalance: "20"
           }))
@@ -46,7 +46,7 @@ describe("integration tests", function () {
 
   describe("/transaction", function () {
     it("submits a new transaction", function (done) {
-      createNewAccount(StellarSdk.Keypair.random().publicKey())
+      createNewAccount(PaysharesSdk.Keypair.random().publicKey())
         .then(result => {
           expect(result.ledger).to.be.not.null;
           done();
@@ -58,9 +58,9 @@ describe("integration tests", function () {
       server.loadAccount(master.publicKey())
         .then(source => {
           source.incrementSequenceNumber(); // This will cause an error
-          let tx = new StellarSdk.TransactionBuilder(source)
-            .addOperation(StellarSdk.Operation.createAccount({
-              destination: StellarSdk.Keypair.random().publicKey(),
+          let tx = new PaysharesSdk.TransactionBuilder(source)
+            .addOperation(PaysharesSdk.Operation.createAccount({
+              destination: PaysharesSdk.Keypair.random().publicKey(),
               startingBalance: "20"
             }))
             .build();
@@ -90,7 +90,7 @@ describe("integration tests", function () {
 
     it("stream accounts", function (done) {
       this.timeout(10*1000);
-      let randomAccount = StellarSdk.Keypair.random();
+      let randomAccount = PaysharesSdk.Keypair.random();
 
       let eventStreamClose = server.accounts()
         .cursor('now')

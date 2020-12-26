@@ -10,7 +10,7 @@ As this project is pre 1.0, breaking changes may happen for minor version bumps.
 
 ## 0.7.3
 
-* Upgrade `stellar-base`.
+* Upgrade `payshares-base`.
 
 ## 0.7.2
 
@@ -18,13 +18,13 @@ As this project is pre 1.0, breaking changes may happen for minor version bumps.
 
 ## 0.7.1
 
-* Upgrade `stellar-base`.
+* Upgrade `payshares-base`.
 
 ## 0.7.0
 
 * Support for new signer types: `sha256Hash`, `preAuthTx`.
-* `StrKey` helper class with `strkey` encoding related methods.
-* Removed deprecated methods: `Keypair.isValidPublicKey` (use `StrKey`), `Keypair.isValidSecretKey` (use `StrKey`), `Keypair.fromSeed`, `Keypair.seed`, `Keypair.rawSeed`.
+* `PsrKey` helper class with `psrkey` encoding related methods.
+* Removed deprecated methods: `Keypair.isValidPublicKey` (use `PsrKey`), `Keypair.isValidSecretKey` (use `PsrKey`), `Keypair.fromSeed`, `Keypair.seed`, `Keypair.rawSeed`.
 * **Breaking changes**:
   * `Network` must be explicitly selected. Previously testnet was a default network.
   * `Operation.setOptions()` method `signer` param changed.
@@ -34,7 +34,7 @@ As this project is pre 1.0, breaking changes may happen for minor version bumps.
 
 ## 0.6.2
 
-* Updated `stellar.toml` location
+* Updated `payshares.toml` location
 
 ## 0.6.1
 
@@ -44,11 +44,11 @@ As this project is pre 1.0, breaking changes may happen for minor version bumps.
 ## 0.6.0
 
 * **Breaking change** `CallBuilder.stream` now reconnects when no data was received for a long time.
-This is to prevent permanent disconnects (more in: [#76](https://github.com/stellar/js-stellar-sdk/pull/76)).
+This is to prevent permanent disconnects (more in: [#76](https://github.com/payshares/js-payshares-sdk/pull/76)).
 Also, this method now returns `close` callback instead of `EventSource` object.
 * **Breaking change** `Server.loadAccount` now returns the `AccountResponse` object.
-* **Breaking change** Upgraded `stellar-base` to `0.6.0`. `ed25519` package is now an optional dependency. Check `StellarSdk.FastSigning` variable to check if `ed25519` package is available. More in README file.
-* New `StellarTomlResolver` class that allows getting `stellar.toml` file for a domain.
+* **Breaking change** Upgraded `payshares-base` to `0.6.0`. `ed25519` package is now an optional dependency. Check `PaysharesSdk.FastSigning` variable to check if `ed25519` package is available. More in README file.
+* New `PaysharesTomlResolver` class that allows getting `payshares.toml` file for a domain.
 * New `Config` class to set global config values.
 
 ## 0.5.1
@@ -64,7 +64,7 @@ Also, this method now returns `close` callback instead of `EventSource` object.
 
 ## 0.4.3
 
-* Updated dependency (`stellar-base`).
+* Updated dependency (`payshares-base`).
 
 ## 0.4.2
 
@@ -74,8 +74,8 @@ Also, this method now returns `close` callback instead of `EventSource` object.
 
 ## 0.4.1
 
-* `stellar-base` bump. (c90c68f)
+* `payshares-base` bump. (c90c68f)
 
 ## 0.4.0
 
-* **Breaking change** Bumped `stellar-base` to [0.5.0](https://github.com/stellar/js-stellar-base/blob/master/CHANGELOG.md#050). (b810aef)
+* **Breaking change** Bumped `payshares-base` to [0.5.0](https://github.com/payshares/js-payshares-base/blob/master/CHANGELOG.md#050). (b810aef)

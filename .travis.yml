@@ -15,9 +15,9 @@ before_install:
 script:
 - |
   echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-  echo "machine github.com login stellar-jenkins password $GITHUB_TOKEN" >~/.netrc
+  echo "machine github.com login payshares-jenkins password $GITHUB_TOKEN" >~/.netrc
   git config --global user.name "Travis CI"
-  git config --global user.email "travis@stellar.org"
+  git config --global user.email "travis@payshares.org"
   if [ "${SAUCE}" = "true" ]; then
     if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
       gulp test:sauce
@@ -25,7 +25,7 @@ script:
       echo "Pull request - skip Sauce Labs testing..."
     fi
   elif [ "${INTEGRATION}" = "true" ]; then
-    docker run -p 127.0.0.1:8000:8000 -d --name=stellar-core-horizon stellar/stellar-core-horizon:latest
+    docker run -p 127.0.0.1:8000:8000 -d --name=payshares-core-horizon payshares/payshares-core-horizon:latest
     # Ugly but it's the only way to make istanbul generate coverage report
     babel-node ./node_modules/gulp/bin/gulp.js test:integration
   else
@@ -55,12 +55,12 @@ before_deploy: gulp build
 after_deploy: "./after_deploy.sh"
 deploy:
   - provider: npm
-    email: npm@stellar.org
+    email: npm@payshares.org
     api_key: "$NPM_TOKEN"
     skip_cleanup: true
     on:
       tags: true
-      repo: stellar/js-stellar-sdk
+      repo: payshares/js-payshares-sdk
       node: 6.9.4
       condition: "$INTEGRATION = true"
   - provider: script
@@ -68,6 +68,6 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
-      repo: stellar/js-stellar-sdk
+      repo: payshares/js-payshares-sdk
       node: 6.9.4
       condition: "$INTEGRATION = true"

@@ -1,9 +1,9 @@
 describe("server.js tests", function () {
   beforeEach(function () {
-    this.server = new StellarSdk.Server('https://horizon-live.stellar.org:1337');
+    this.server = new PaysharesSdk.Server('https://horizon-live.payshares.org:1337');
     this.axiosMock = sinon.mock(axios);
-    StellarSdk.Config.setDefault();
-    StellarSdk.Network.useTestNetwork();
+    PaysharesSdk.Config.setDefault();
+    PaysharesSdk.Network.useTestNetwork();
   });
 
   afterEach(function () {
@@ -13,16 +13,16 @@ describe("server.js tests", function () {
 
   describe('Server.constructor', function () {
     it("throws error for insecure server", function () {
-      expect(() => new StellarSdk.Server('http://horizon-live.stellar.org:1337')).to.throw(/Cannot connect to insecure horizon server/);
+      expect(() => new PaysharesSdk.Server('http://horizon-live.payshares.org:1337')).to.throw(/Cannot connect to insecure horizon server/);
     });
 
     it("allow insecure server when opts.allowHttp flag is set", function () {
-      expect(() => new StellarSdk.Server('http://horizon-live.stellar.org:1337', {allowHttp: true})).to.not.throw();
+      expect(() => new PaysharesSdk.Server('http://horizon-live.payshares.org:1337', {allowHttp: true})).to.not.throw();
     });
 
     it("allow insecure server when global Config.allowHttp flag is set", function () {
-      StellarSdk.Config.setAllowHttp(true);
-      expect(() => new StellarSdk.Server('http://horizon-live.stellar.org:1337')).to.not.throw();
+      PaysharesSdk.Config.setAllowHttp(true);
+      expect(() => new PaysharesSdk.Server('http://horizon-live.payshares.org:1337')).to.not.throw();
     });
   });
 
@@ -30,26 +30,26 @@ describe("server.js tests", function () {
     let accountResponse = {
       "_links": {
         "self": {
-          "href": "https://horizon-testnet.stellar.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS"
+          "href": "https://horizon-testnet.payshares.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS"
         },
         "transactions": {
-          "href": "https://horizon-testnet.stellar.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/transactions{?cursor,limit,order}",
+          "href": "https://horizon-testnet.payshares.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/transactions{?cursor,limit,order}",
           "templated": true
         },
         "operations": {
-          "href": "https://horizon-testnet.stellar.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/operations{?cursor,limit,order}",
+          "href": "https://horizon-testnet.payshares.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/operations{?cursor,limit,order}",
           "templated": true
         },
         "payments": {
-          "href": "https://horizon-testnet.stellar.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/payments{?cursor,limit,order}",
+          "href": "https://horizon-testnet.payshares.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/payments{?cursor,limit,order}",
           "templated": true
         },
         "effects": {
-          "href": "https://horizon-testnet.stellar.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/effects{?cursor,limit,order}",
+          "href": "https://horizon-testnet.payshares.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/effects{?cursor,limit,order}",
           "templated": true
         },
         "offers": {
-          "href": "https://horizon-testnet.stellar.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/offers{?cursor,limit,order}",
+          "href": "https://horizon-testnet.payshares.org/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS/offers{?cursor,limit,order}",
           "templated": true
         }
       },
@@ -105,7 +105,7 @@ describe("server.js tests", function () {
 
     it("returns AccountResponse object", function (done) {
       this.axiosMock.expects('get')
-        .withArgs(sinon.match('https://horizon-live.stellar.org:1337/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS'))
+        .withArgs(sinon.match('https://horizon-live.payshares.org:1337/accounts/GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS'))
         .returns(Promise.resolve({data: accountResponse}));
 
       this.server.loadAccount("GBAH7FQMC3CZJ4WD6GE7G7YXCIU36LC2IHXQ7D5MQAUO4PODOWIVLSFS")
@@ -182,7 +182,7 @@ describe("server.js tests", function () {
       describe("without options", function () {
         it("requests the correct endpoint", function (done) {
           this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers'))
             .returns(Promise.resolve({data: ledgersResponse}));
 
           this.server.ledgers()
@@ -202,7 +202,7 @@ describe("server.js tests", function () {
       describe("with options", function () {
         beforeEach(function() {
           this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers?limit=1&cursor=b&order=asc'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers?limit=1&cursor=b&order=asc'))
             .returns(Promise.resolve({data: ledgersResponse}));
         });
 
@@ -222,7 +222,7 @@ describe("server.js tests", function () {
 
         it("can call .next() on the result to retrieve the next page", function (done) {
           this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers?order=asc&limit=1&cursor=4294967296'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers?order=asc&limit=1&cursor=4294967296'))
             .returns(Promise.resolve(({data: ledgersResponse})));
 
           this.server
@@ -274,7 +274,7 @@ describe("server.js tests", function () {
       describe("for a non existent ledger", function () {
         it("throws a NotFoundError", function (done) {
           this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers/1'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers/1'))
             .returns(Promise.reject({status: 404, data: {}}));
 
           this.server.ledgers()
@@ -283,7 +283,7 @@ describe("server.js tests", function () {
             .then(function () {
               done("didn't throw an error");
             })
-            .catch(StellarSdk.NotFoundError, function (err) {
+            .catch(PaysharesSdk.NotFoundError, function (err) {
               done();
             })
             .catch(function (err) {
@@ -294,7 +294,7 @@ describe("server.js tests", function () {
       describe("without options", function () {
         it("requests the correct endpoint", function (done) {
           this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers/1'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers/1'))
             .returns(Promise.resolve({data: singleLedgerResponse}));
 
           this.server.ledgers()
@@ -313,7 +313,7 @@ describe("server.js tests", function () {
       describe("with options", function () {
         it("requests the correct endpoint", function (done) {
           this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers/1?limit=1&cursor=b&order=asc'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers/1?limit=1&cursor=b&order=asc'))
             .returns(Promise.resolve({data: singleLedgerResponse}));
 
           this.server.ledgers()
@@ -337,13 +337,13 @@ describe("server.js tests", function () {
       let transactionsResponse = {
           "_links": {
             "self": {
-              "href": "https://horizon.stellar.org/transactions?order=desc\u0026limit=1\u0026cursor="
+              "href": "https://horizon.payshares.org/transactions?order=desc\u0026limit=1\u0026cursor="
             },
             "next": {
-              "href": "https://horizon.stellar.org/transactions?order=desc\u0026limit=1\u0026cursor=34156680904183808"
+              "href": "https://horizon.payshares.org/transactions?order=desc\u0026limit=1\u0026cursor=34156680904183808"
             },
             "prev": {
-              "href": "https://horizon.stellar.org/transactions?order=asc\u0026limit=1\u0026cursor=34156680904183808"
+              "href": "https://horizon.payshares.org/transactions?order=asc\u0026limit=1\u0026cursor=34156680904183808"
             }
           },
           "_embedded": {
@@ -351,27 +351,27 @@ describe("server.js tests", function () {
               {
                 "_links": {
                   "self": {
-                    "href": "https://horizon.stellar.org/transactions/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1"
+                    "href": "https://horizon.payshares.org/transactions/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1"
                   },
                   "account": {
-                    "href": "https://horizon.stellar.org/accounts/GBURK32BMC7XORYES62HDKY7VTA5MO7JYBDH7KTML4EPN4BV2MIRQOVR"
+                    "href": "https://horizon.payshares.org/accounts/GBURK32BMC7XORYES62HDKY7VTA5MO7JYBDH7KTML4EPN4BV2MIRQOVR"
                   },
                   "ledger": {
-                    "href": "https://horizon.stellar.org/ledgers/7952722"
+                    "href": "https://horizon.payshares.org/ledgers/7952722"
                   },
                   "operations": {
-                    "href": "https://horizon.stellar.org/transactions/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1/operations{?cursor,limit,order}",
+                    "href": "https://horizon.payshares.org/transactions/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1/operations{?cursor,limit,order}",
                     "templated": true
                   },
                   "effects": {
-                    "href": "https://horizon.stellar.org/transactions/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1/effects{?cursor,limit,order}",
+                    "href": "https://horizon.payshares.org/transactions/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1/effects{?cursor,limit,order}",
                     "templated": true
                   },
                   "precedes": {
-                    "href": "https://horizon.stellar.org/transactions?order=asc\u0026cursor=34156680904183808"
+                    "href": "https://horizon.payshares.org/transactions?order=asc\u0026cursor=34156680904183808"
                   },
                   "succeeds": {
-                    "href": "https://horizon.stellar.org/transactions?order=desc\u0026cursor=34156680904183808"
+                    "href": "https://horizon.payshares.org/transactions?order=desc\u0026cursor=34156680904183808"
                   }
                 },
                 "id": "c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1",
@@ -399,11 +399,11 @@ describe("server.js tests", function () {
       describe("without options", function () {
         it("requests the correct endpoint", function (done) {
           this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers/7952722/transactions'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers/7952722/transactions'))
             .returns(Promise.resolve({data: transactionsResponse}));
 
           this.axiosMock.expects('get')
-            .withArgs(sinon.match(/^https:\/\/horizon.stellar.org\/transactions\/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1\/operations/))
+            .withArgs(sinon.match(/^https:\/\/horizon.payshares.org\/transactions\/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1\/operations/))
             .returns(Promise.resolve({data: {operations: []}}));
 
           this.server.transactions()
@@ -432,11 +432,11 @@ describe("server.js tests", function () {
       describe("with options", function () {
         it("requests the correct endpoint", function (done) {
           this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers/7952722/transactions?cursor=b&limit=1&order=asc'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers/7952722/transactions?cursor=b&limit=1&order=asc'))
             .returns(Promise.resolve({data: transactionsResponse}));
 
           this.axiosMock.expects('get')
-            .withArgs(sinon.match(/^https:\/\/horizon.stellar.org\/transactions\/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1\/operations\?limit=1/))
+            .withArgs(sinon.match(/^https:\/\/horizon.payshares.org\/transactions\/c585b8764b28be678c482f8b6e87e76e4b5f28043c53f4dcb7b724b4b2efebc1\/operations\?limit=1/))
             .returns(Promise.resolve({data: {operations: []}}));
 
           this.server.transactions()
@@ -467,12 +467,12 @@ describe("server.js tests", function () {
 
   describe('Server.submitTransaction', function() {
     it("sends a transaction", function(done) {
-      let keypair = StellarSdk.Keypair.random();
-      let account = new StellarSdk.Account(keypair.publicKey(), "56199647068161");
-      let transaction = new StellarSdk.TransactionBuilder(account)
-        .addOperation(StellarSdk.Operation.payment({
+      let keypair = PaysharesSdk.Keypair.random();
+      let account = new PaysharesSdk.Account(keypair.publicKey(), "56199647068161");
+      let transaction = new PaysharesSdk.TransactionBuilder(account)
+        .addOperation(PaysharesSdk.Operation.payment({
           destination: "GASOCNHNNLYFNMDJYQ3XFMI7BYHIOCFW3GJEOWRPEGK2TDPGTG2E5EDW",
-          asset: StellarSdk.Asset.native(),
+          asset: PaysharesSdk.Asset.native(),
           amount: "100.50"
         }))
         .build();
@@ -480,7 +480,7 @@ describe("server.js tests", function () {
 
       let blob = encodeURIComponent(transaction.toEnvelope().toXDR().toString("base64"));
       this.axiosMock.expects('post')
-        .withArgs('https://horizon-live.stellar.org:1337/transactions', `tx=${blob}`)
+        .withArgs('https://horizon-live.payshares.org:1337/transactions', `tx=${blob}`)
         .returns(Promise.resolve({data: {}}));
 
       this.server.submitTransaction(transaction)
@@ -563,7 +563,7 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/accounts/GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/accounts/GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K'))
           .returns(Promise.resolve({data: singleAccountResponse}));
 
         this.server.accounts()
@@ -599,7 +599,7 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/accounts/GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K/offers?order=asc'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/accounts/GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K/offers?order=asc'))
           .returns(Promise.resolve({data: offersResponse}));
 
         this.server.offers('accounts', "GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K")
@@ -640,10 +640,10 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint native/credit", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/order_book?selling_asset_type=native&buying_asset_type=credit_alphanum4&buying_asset_code=USD&buying_asset_issuer=GDVDKQFP665JAO7A2LSHNLQIUNYNAAIGJ6FYJVMG4DT3YJQQJSRBLQDG'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/order_book?selling_asset_type=native&buying_asset_type=credit_alphanum4&buying_asset_code=USD&buying_asset_issuer=GDVDKQFP665JAO7A2LSHNLQIUNYNAAIGJ6FYJVMG4DT3YJQQJSRBLQDG'))
           .returns(Promise.resolve({data: orderBookResponse}));
 
-        this.server.orderbook(StellarSdk.Asset.native(), new StellarSdk.Asset('USD', "GDVDKQFP665JAO7A2LSHNLQIUNYNAAIGJ6FYJVMG4DT3YJQQJSRBLQDG"))
+        this.server.orderbook(PaysharesSdk.Asset.native(), new PaysharesSdk.Asset('USD', "GDVDKQFP665JAO7A2LSHNLQIUNYNAAIGJ6FYJVMG4DT3YJQQJSRBLQDG"))
           .call()
           .then(function (response) {
             expect(response).to.be.deep.equal(orderBookResponse);
@@ -656,10 +656,10 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint credit/native", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/order_book?selling_asset_type=credit_alphanum4&selling_asset_code=USD&selling_asset_issuer=GDVDKQFP665JAO7A2LSHNLQIUNYNAAIGJ6FYJVMG4DT3YJQQJSRBLQDG&buying_asset_type=native'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/order_book?selling_asset_type=credit_alphanum4&selling_asset_code=USD&selling_asset_issuer=GDVDKQFP665JAO7A2LSHNLQIUNYNAAIGJ6FYJVMG4DT3YJQQJSRBLQDG&buying_asset_type=native'))
           .returns(Promise.resolve({data: orderBookResponse}));
 
-        this.server.orderbook(new StellarSdk.Asset('USD', "GDVDKQFP665JAO7A2LSHNLQIUNYNAAIGJ6FYJVMG4DT3YJQQJSRBLQDG"), StellarSdk.Asset.native())
+        this.server.orderbook(new PaysharesSdk.Asset('USD', "GDVDKQFP665JAO7A2LSHNLQIUNYNAAIGJ6FYJVMG4DT3YJQQJSRBLQDG"), PaysharesSdk.Asset.native())
           .call()
           .then(function (response) {
             expect(response).to.be.deep.equal(orderBookResponse);
@@ -677,13 +677,13 @@ describe("server.js tests", function () {
         let tradesResponse = {
           _links: {
             self: {
-              href: "https://horizon-live.stellar.org:1337/trades?order=asc&limit=200&cursor="
+              href: "https://horizon-live.payshares.org:1337/trades?order=asc&limit=200&cursor="
             },
             next: {
-              href: "https://horizon-live.stellar.org:1337/trades?order=asc&limit=200&cursor=64199539053039617-0"
+              href: "https://horizon-live.payshares.org:1337/trades?order=asc&limit=200&cursor=64199539053039617-0"
             },
             prev: {
-              href: "https://horizon-live.stellar.org:1337/trades?order=desc&limit=200&cursor=64199539053039617-0"
+              href: "https://horizon-live.payshares.org:1337/trades?order=desc&limit=200&cursor=64199539053039617-0"
             }
           },
           _embedded: {
@@ -691,13 +691,13 @@ describe("server.js tests", function () {
               {
                 _links: {
                   base: {
-                    href: "https://horizon-live.stellar.org:1337/accounts/GB7JKG66CJN3ACX5DX43FOZTTSOI7GZUP547I3BSXIJVUX3NRYUXHE6W"
+                    href: "https://horizon-live.payshares.org:1337/accounts/GB7JKG66CJN3ACX5DX43FOZTTSOI7GZUP547I3BSXIJVUX3NRYUXHE6W"
                   },
                   counter: {
-                    href: "https://horizon-live.stellar.org:1337/accounts/GC6APVH2HCFB7QLSTG3U55IYSW7ZRNSCTOZZYZJCNHWX2FONCNJNULYN"
+                    href: "https://horizon-live.payshares.org:1337/accounts/GC6APVH2HCFB7QLSTG3U55IYSW7ZRNSCTOZZYZJCNHWX2FONCNJNULYN"
                   },
                   operation: {
-                    href: "https://horizon-live.stellar.org:1337/operations/64199539053039617"
+                    href: "https://horizon-live.payshares.org:1337/operations/64199539053039617"
                   }
                 },
                 id: "64199539053039617-0",
@@ -719,7 +719,7 @@ describe("server.js tests", function () {
         };
 
         this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/trades'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/trades'))
             .returns(Promise.resolve({data: tradesResponse}));
 
         this.server.trades()
@@ -737,13 +737,13 @@ describe("server.js tests", function () {
         let tradesResponse = {
           _links: {
             self: {
-              href: "https://horizon-live.stellar.org:1337/trades?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=JPY&counter_asset_issuer=GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM&order=asc&limit=10&cursor="
+              href: "https://horizon-live.payshares.org:1337/trades?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=JPY&counter_asset_issuer=GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM&order=asc&limit=10&cursor="
             },
             next: {
-              href: "https://horizon-live.stellar.org:1337/trades?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=JPY&counter_asset_issuer=GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM&order=asc&limit=10&cursor=64199539053039617-0"
+              href: "https://horizon-live.payshares.org:1337/trades?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=JPY&counter_asset_issuer=GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM&order=asc&limit=10&cursor=64199539053039617-0"
             },
             prev: {
-              href: "https://horizon-live.stellar.org:1337/trades?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=JPY&counter_asset_issuer=GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM&order=desc&limit=10&cursor=64199539053039617-0"
+              href: "https://horizon-live.payshares.org:1337/trades?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=JPY&counter_asset_issuer=GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM&order=desc&limit=10&cursor=64199539053039617-0"
             }
           },
           _embedded: {
@@ -751,13 +751,13 @@ describe("server.js tests", function () {
               {
                 _links: {
                   base: {
-                    href: "https://horizon-live.stellar.org:1337/accounts/GB7JKG66CJN3ACX5DX43FOZTTSOI7GZUP547I3BSXIJVUX3NRYUXHE6W"
+                    href: "https://horizon-live.payshares.org:1337/accounts/GB7JKG66CJN3ACX5DX43FOZTTSOI7GZUP547I3BSXIJVUX3NRYUXHE6W"
                   },
                   counter: {
-                    href: "https://horizon-live.stellar.org:1337/accounts/GC6APVH2HCFB7QLSTG3U55IYSW7ZRNSCTOZZYZJCNHWX2FONCNJNULYN"
+                    href: "https://horizon-live.payshares.org:1337/accounts/GC6APVH2HCFB7QLSTG3U55IYSW7ZRNSCTOZZYZJCNHWX2FONCNJNULYN"
                   },
                   operation: {
-                    href: "https://horizon-live.stellar.org:1337/operations/64199539053039617"
+                    href: "https://horizon-live.payshares.org:1337/operations/64199539053039617"
                   }
                 },
                 id: "64199539053039617-0",
@@ -779,11 +779,11 @@ describe("server.js tests", function () {
         };
 
         this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/trades?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=JPY&counter_asset_issuer=GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/trades?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=JPY&counter_asset_issuer=GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM'))
             .returns(Promise.resolve({data: tradesResponse}));
 
         this.server.trades()
-            .forAssetPair(StellarSdk.Asset.native(), new StellarSdk.Asset('JPY', "GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM"))
+            .forAssetPair(PaysharesSdk.Asset.native(), new PaysharesSdk.Asset('JPY', "GBVAOIACNSB7OVUXJYC5UE2D4YK2F7A24T7EE5YOMN4CE6GCHUTOUQXM"))
             .call()
             .then(function (response) {
               expect(response.records).to.be.deep.equal(tradesResponse._embedded.records);
@@ -798,13 +798,13 @@ describe("server.js tests", function () {
         let tradesResponse = {
           _links: {
             self: {
-              href: "https://horizon-live.stellar.org:1337/trades?offer_id=278232&order=asc&limit=10&cursor="
+              href: "https://horizon-live.payshares.org:1337/trades?offer_id=278232&order=asc&limit=10&cursor="
             },
             next: {
-              href: "https://horizon-live.stellar.org:1337/trades?offer_id=278232&order=asc&limit=10&cursor=64199539053039617-0"
+              href: "https://horizon-live.payshares.org:1337/trades?offer_id=278232&order=asc&limit=10&cursor=64199539053039617-0"
             },
             prev: {
-              href: "https://horizon-live.stellar.org:1337/trades?offer_id=278232&order=desc&limit=10&cursor=64199539053039617-0"
+              href: "https://horizon-live.payshares.org:1337/trades?offer_id=278232&order=desc&limit=10&cursor=64199539053039617-0"
             }
           },
           _embedded: {
@@ -812,13 +812,13 @@ describe("server.js tests", function () {
               {
                 _links: {
                   base: {
-                    href: "https://horizon-live.stellar.org:1337/accounts/GB7JKG66CJN3ACX5DX43FOZTTSOI7GZUP547I3BSXIJVUX3NRYUXHE6W"
+                    href: "https://horizon-live.payshares.org:1337/accounts/GB7JKG66CJN3ACX5DX43FOZTTSOI7GZUP547I3BSXIJVUX3NRYUXHE6W"
                   },
                   counter: {
-                    href: "https://horizon-live.stellar.org:1337/accounts/GC6APVH2HCFB7QLSTG3U55IYSW7ZRNSCTOZZYZJCNHWX2FONCNJNULYN"
+                    href: "https://horizon-live.payshares.org:1337/accounts/GC6APVH2HCFB7QLSTG3U55IYSW7ZRNSCTOZZYZJCNHWX2FONCNJNULYN"
                   },
                   operation: {
-                    href: "https://horizon-live.stellar.org:1337/operations/64199539053039617"
+                    href: "https://horizon-live.payshares.org:1337/operations/64199539053039617"
                   }
                 },
                 id: "64199539053039617-0",
@@ -840,7 +840,7 @@ describe("server.js tests", function () {
         };
 
         this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/trades?offer_id=278232'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/trades?offer_id=278232'))
             .returns(Promise.resolve({data: tradesResponse}));
 
         this.server.trades()
@@ -859,13 +859,13 @@ describe("server.js tests", function () {
         let tradesResponse = {
           _links: {
             self: {
-              href: "https://horizon-live.stellar.org:1337/trades?order=asc&limit=1&cursor=64199539053039617-0"
+              href: "https://horizon-live.payshares.org:1337/trades?order=asc&limit=1&cursor=64199539053039617-0"
             },
             next: {
-              href: "https://horizon-live.stellar.org:1337/trades?order=asc&limit=1&cursor=64199676491993090-0"
+              href: "https://horizon-live.payshares.org:1337/trades?order=asc&limit=1&cursor=64199676491993090-0"
             },
             prev: {
-              href: "https://horizon-live.stellar.org:1337/trades?order=desc&limit=1&cursor=64199676491993090-0"
+              href: "https://horizon-live.payshares.org:1337/trades?order=desc&limit=1&cursor=64199676491993090-0"
             }
           },
           _embedded: {
@@ -873,13 +873,13 @@ describe("server.js tests", function () {
               {
                 _links: {
                   base: {
-                    href: "https://horizon-live.stellar.org:1337/accounts/GBBHSWC3XSUFKEFDPQO346BCLM3EAJHICWRVSVIQOG4YBIH3A2VCJ6G2"
+                    href: "https://horizon-live.payshares.org:1337/accounts/GBBHSWC3XSUFKEFDPQO346BCLM3EAJHICWRVSVIQOG4YBIH3A2VCJ6G2"
                   },
                   counter: {
-                    href: "https://horizon-live.stellar.org:1337/accounts/GDBXANSAUQ5WBFSA6LFQXR5PYVYAQ3T4KI4LHZ3YAAEFI3BS2Z3SFRVG"
+                    href: "https://horizon-live.payshares.org:1337/accounts/GDBXANSAUQ5WBFSA6LFQXR5PYVYAQ3T4KI4LHZ3YAAEFI3BS2Z3SFRVG"
                   },
                   operation: {
-                    href: "https://horizon-live.stellar.org:1337/operations/64199676491993090"
+                    href: "https://horizon-live.payshares.org:1337/operations/64199676491993090"
                   }
                 },
                 id: "64199676491993090-0",
@@ -903,7 +903,7 @@ describe("server.js tests", function () {
         };
 
         this.axiosMock.expects('get')
-            .withArgs(sinon.match('https://horizon-live.stellar.org:1337/trades?order=asc&limit=1&cursor=64199539053039617-0'))
+            .withArgs(sinon.match('https://horizon-live.payshares.org:1337/trades?order=asc&limit=1&cursor=64199539053039617-0'))
             .returns(Promise.resolve({data: tradesResponse}));
 
         this.server.trades()
@@ -983,10 +983,10 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/paths?destination_account=GAEDTJ4PPEFVW5XV2S7LUXBEHNQMX5Q2GM562RJGOQG7GVCE5H3HIB4V&source_account=GARSFJNXJIHO6ULUBK3DBYKVSIZE7SC72S5DYBCHU7DKL22UXKVD7MXP&destination_amount=20.0&destination_asset_type=credit_alphanum4&destination_asset_code=EUR&destination_asset_issuer=GDSBCQO34HWPGUGQSP3QBFEXVTSR2PW46UIGTHVWGWJGQKH3AFNHXHXN'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/paths?destination_account=GAEDTJ4PPEFVW5XV2S7LUXBEHNQMX5Q2GM562RJGOQG7GVCE5H3HIB4V&source_account=GARSFJNXJIHO6ULUBK3DBYKVSIZE7SC72S5DYBCHU7DKL22UXKVD7MXP&destination_amount=20.0&destination_asset_type=credit_alphanum4&destination_asset_code=EUR&destination_asset_issuer=GDSBCQO34HWPGUGQSP3QBFEXVTSR2PW46UIGTHVWGWJGQKH3AFNHXHXN'))
           .returns(Promise.resolve({data: pathsResponse}));
 
-        this.server.paths("GARSFJNXJIHO6ULUBK3DBYKVSIZE7SC72S5DYBCHU7DKL22UXKVD7MXP","GAEDTJ4PPEFVW5XV2S7LUXBEHNQMX5Q2GM562RJGOQG7GVCE5H3HIB4V", new StellarSdk.Asset('EUR', 'GDSBCQO34HWPGUGQSP3QBFEXVTSR2PW46UIGTHVWGWJGQKH3AFNHXHXN'), '20.0')
+        this.server.paths("GARSFJNXJIHO6ULUBK3DBYKVSIZE7SC72S5DYBCHU7DKL22UXKVD7MXP","GAEDTJ4PPEFVW5XV2S7LUXBEHNQMX5Q2GM562RJGOQG7GVCE5H3HIB4V", new PaysharesSdk.Asset('EUR', 'GDSBCQO34HWPGUGQSP3QBFEXVTSR2PW46UIGTHVWGWJGQKH3AFNHXHXN'), '20.0')
           .call()
           .then(function (response) {
             expect(response.records).to.be.deep.equal(pathsResponse._embedded.records);
@@ -1039,7 +1039,7 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/effects?cursor=b'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/effects?cursor=b'))
           .returns(Promise.resolve({data: effectsResponse}));
 
         this.server.effects()
@@ -1058,7 +1058,7 @@ describe("server.js tests", function () {
 
       it("forAccount() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/accounts/GCGHCFUB6JKQE42C76BK2LYB3EHKP4WQJE624WTSL3CU2PPDYE5RBMJE/effects'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/accounts/GCGHCFUB6JKQE42C76BK2LYB3EHKP4WQJE624WTSL3CU2PPDYE5RBMJE/effects'))
           .returns(Promise.resolve({data: effectsResponse}));
 
         this.server.effects()
@@ -1077,7 +1077,7 @@ describe("server.js tests", function () {
 
       it("forTransaction() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/transactions/ef37d6770c40c3bdb6adba80759f2819971396d1c3dfb7b5611f63ad72a9a4ae/effects'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/transactions/ef37d6770c40c3bdb6adba80759f2819971396d1c3dfb7b5611f63ad72a9a4ae/effects'))
           .returns(Promise.resolve({data: effectsResponse}));
 
         this.server.effects()
@@ -1148,7 +1148,7 @@ describe("server.js tests", function () {
 
       it("operation() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/operations/123456789'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/operations/123456789'))
           .returns(Promise.resolve({data: operationsResponse}));
 
         this.server.operations()
@@ -1167,7 +1167,7 @@ describe("server.js tests", function () {
 
       it("forAccount() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/accounts/GCGHCFUB6JKQE42C76BK2LYB3EHKP4WQJE624WTSL3CU2PPDYE5RBMJE/operations'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/accounts/GCGHCFUB6JKQE42C76BK2LYB3EHKP4WQJE624WTSL3CU2PPDYE5RBMJE/operations'))
           .returns(Promise.resolve({data: operationsResponse}));
 
         this.server.operations()
@@ -1186,7 +1186,7 @@ describe("server.js tests", function () {
 
       it("forLedger() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers/123456789/operations'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers/123456789/operations'))
           .returns(Promise.resolve({data: operationsResponse}));
 
         this.server.operations()
@@ -1205,7 +1205,7 @@ describe("server.js tests", function () {
 
       it("forTransaction() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/transactions/blah/operations'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/transactions/blah/operations'))
           .returns(Promise.resolve({data: operationsResponse}));
 
         this.server.operations()
@@ -1271,7 +1271,7 @@ describe("server.js tests", function () {
 
       it("forAccount() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/accounts/GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K/payments'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/accounts/GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K/payments'))
           .returns(Promise.resolve({data: paymentsResponse}));
 
         this.server.payments()
@@ -1290,7 +1290,7 @@ describe("server.js tests", function () {
 
       it("forLedger() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/ledgers/123456789/payments'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/ledgers/123456789/payments'))
           .returns(Promise.resolve({data: paymentsResponse}));
 
         this.server.payments()
@@ -1309,7 +1309,7 @@ describe("server.js tests", function () {
 
       it("forTransaction() requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/transactions/77277606902d80a03a892536ebff8466726a4e55c3923ec2d3eeb3aa5bdc3731/payments'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/transactions/77277606902d80a03a892536ebff8466726a4e55c3923ec2d3eeb3aa5bdc3731/payments'))
           .returns(Promise.resolve({data: paymentsResponse}));
 
         this.server.payments()
@@ -1334,7 +1334,7 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/friendbot?addr=GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/friendbot?addr=GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K'))
           .returns(Promise.resolve({data: friendbotResponse}));
 
         this.server.friendbot("GBS43BF24ENNS3KPACUZVKK2VYPOZVBQO2CISGZ777RYGOPYC2FT6S3K")
@@ -1354,10 +1354,10 @@ describe("server.js tests", function () {
       let tradeAggregationResponse = {
         "_links": {
           "self": {
-            "href": "https://horizon.stellar.org/trade_aggregations?base_asset_type=native\u0026counter_asset_type=credit_alphanum4\u0026counter_asset_code=BTC\u0026counter_asset_issuer=GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH\u0026start_time=1512689100000\u0026end_time=1512775500000\u0026resolution=300000"
+            "href": "https://horizon.payshares.org/trade_aggregations?base_asset_type=native\u0026counter_asset_type=credit_alphanum4\u0026counter_asset_code=BTC\u0026counter_asset_issuer=GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH\u0026start_time=1512689100000\u0026end_time=1512775500000\u0026resolution=300000"
           },
           "next": {
-            "href": "https://horizon.stellar.org/trade_aggregations?base_asset_type=native\u0026counter_asset_code=BTC\u0026counter_asset_issuer=GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH\u0026counter_asset_type=credit_alphanum4\u0026end_time=1512775500000\u0026resolution=300000\u0026start_time=1512765000000"
+            "href": "https://horizon.payshares.org/trade_aggregations?base_asset_type=native\u0026counter_asset_code=BTC\u0026counter_asset_issuer=GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH\u0026counter_asset_type=credit_alphanum4\u0026end_time=1512775500000\u0026resolution=300000\u0026start_time=1512765000000"
           },
           "prev": {
             "href": ""
@@ -1404,10 +1404,10 @@ describe("server.js tests", function () {
   
       it("requests the correct endpoint native/credit", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/trade_aggregations?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=BTC&counter_asset_issuer=GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH&start_time=1512689100000&end_time=1512775500000&resolution=300000'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/trade_aggregations?base_asset_type=native&counter_asset_type=credit_alphanum4&counter_asset_code=BTC&counter_asset_issuer=GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH&start_time=1512689100000&end_time=1512775500000&resolution=300000'))
           .returns(Promise.resolve({ data: tradeAggregationResponse }));
 
-        this.server.tradeAggregation(StellarSdk.Asset.native(), new StellarSdk.Asset('BTC', "GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH"), 1512689100000, 1512775500000, 300000)
+        this.server.tradeAggregation(PaysharesSdk.Asset.native(), new PaysharesSdk.Asset('BTC', "GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH"), 1512689100000, 1512775500000, 300000)
           .call()
           .then(function (response) {
             expect(response.records).to.be.deep.equal(tradeAggregationResponse._embedded.records);
@@ -1422,10 +1422,10 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint credit/native", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/trade_aggregations?base_asset_type=credit_alphanum4&base_asset_code=BTC&base_asset_issuer=GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH&counter_asset_type=native&start_time=1512689100000&end_time=1512775500000&resolution=300000'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/trade_aggregations?base_asset_type=credit_alphanum4&base_asset_code=BTC&base_asset_issuer=GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH&counter_asset_type=native&start_time=1512689100000&end_time=1512775500000&resolution=300000'))
           .returns(Promise.resolve({ data: tradeAggregationResponse }));
 
-        this.server.tradeAggregation(new StellarSdk.Asset('BTC', "GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH"), StellarSdk.Asset.native(), 1512689100000, 1512775500000, 300000)
+        this.server.tradeAggregation(new PaysharesSdk.Asset('BTC', "GATEMHCCKCY67ZUCKTROYN24ZYT5GK4EQZ65JJLDHKHRUZI3EUEKMTCH"), PaysharesSdk.Asset.native(), 1512689100000, 1512775500000, 300000)
           .call()
           .then(function (response) {
             expect(response.records).to.be.deep.equal(tradeAggregationResponse._embedded.records);
@@ -1445,13 +1445,13 @@ describe("server.js tests", function () {
         let assetsResponse ={
           "_links": {
             "self": {
-              "href": "https://horizon-live.stellar.org:1337/assets?order=asc\u0026limit=1\u0026cursor="
+              "href": "https://horizon-live.payshares.org:1337/assets?order=asc\u0026limit=1\u0026cursor="
             },
             "next": {
-              "href": "https://horizon-live.stellar.org:1337/assets?order=asc\u0026limit=1\u0026cursor=9HORIZONS_GB2HXY7UEDCSHOWZ4553QFGFILNU73OFS2P4HU5IB3UUU66TWPBPVTGW_credit_alphanum12"
+              "href": "https://horizon-live.payshares.org:1337/assets?order=asc\u0026limit=1\u0026cursor=9HORIZONS_GB2HXY7UEDCSHOWZ4553QFGFILNU73OFS2P4HU5IB3UUU66TWPBPVTGW_credit_alphanum12"
             },
             "prev": {
-              "href": "https://horizon-live.stellar.org:1337/assets?order=desc\u0026limit=1\u0026cursor=9HORIZONS_GB2HXY7UEDCSHOWZ4553QFGFILNU73OFS2P4HU5IB3UUU66TWPBPVTGW_credit_alphanum12"
+              "href": "https://horizon-live.payshares.org:1337/assets?order=desc\u0026limit=1\u0026cursor=9HORIZONS_GB2HXY7UEDCSHOWZ4553QFGFILNU73OFS2P4HU5IB3UUU66TWPBPVTGW_credit_alphanum12"
             }
           },
           "_embedded": {
@@ -1478,7 +1478,7 @@ describe("server.js tests", function () {
         };
 
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/assets?limit=1'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/assets?limit=1'))
           .returns(Promise.resolve({data: assetsResponse}));
 
         this.server.assets()
@@ -1497,13 +1497,13 @@ describe("server.js tests", function () {
         let assetsCodeResponse = {
           "_links": {
             "self": {
-              "href": "https://horizon-live.stellar.org:1337/assets?order=asc\u0026limit=1\u0026cursor=\u0026asset_code=USD"
+              "href": "https://horizon-live.payshares.org:1337/assets?order=asc\u0026limit=1\u0026cursor=\u0026asset_code=USD"
             },
             "next": {
-              "href": "https://horizon-live.stellar.org:1337/assets?order=asc\u0026limit=1\u0026cursor=USD_GCYK67DDGBOANS6UODJ62QWGLEB2A7JQ3XUV25HCMLT7CI23PMMK3W6R_credit_alphanum4\u0026asset_code=USD"
+              "href": "https://horizon-live.payshares.org:1337/assets?order=asc\u0026limit=1\u0026cursor=USD_GCYK67DDGBOANS6UODJ62QWGLEB2A7JQ3XUV25HCMLT7CI23PMMK3W6R_credit_alphanum4\u0026asset_code=USD"
             },
             "prev": {
-              "href": "https://horizon-live.stellar.org:1337/assets?order=desc\u0026limit=1\u0026cursor=USD_GCYK67DDGBOANS6UODJ62QWGLEB2A7JQ3XUV25HCMLT7CI23PMMK3W6R_credit_alphanum4\u0026asset_code=USD"
+              "href": "https://horizon-live.payshares.org:1337/assets?order=desc\u0026limit=1\u0026cursor=USD_GCYK67DDGBOANS6UODJ62QWGLEB2A7JQ3XUV25HCMLT7CI23PMMK3W6R_credit_alphanum4\u0026asset_code=USD"
             }
           },
           "_embedded": {
@@ -1529,7 +1529,7 @@ describe("server.js tests", function () {
           }
         };
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/assets?asset_code=USD&limit=1'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/assets?asset_code=USD&limit=1'))
           .returns(Promise.resolve({data: assetsCodeResponse}));
 
         this.server.assets()
@@ -1549,13 +1549,13 @@ describe("server.js tests", function () {
         let assetIssuerResponse = {
           "_links": {
             "self": {
-              "href": "http://horizon-testnet.stellar.org:1337/assets?order=asc\u0026limit=10\u0026cursor=\u0026asset_issuer=GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN"
+              "href": "http://horizon-testnet.payshares.org:1337/assets?order=asc\u0026limit=10\u0026cursor=\u0026asset_issuer=GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN"
             },
             "next": {
-              "href": "http://horizon-testnet.stellar.org:1337/assets?order=asc\u0026limit=10\u0026cursor=00acc1_GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN_credit_alphanum12\u0026asset_issuer=GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN"
+              "href": "http://horizon-testnet.payshares.org:1337/assets?order=asc\u0026limit=10\u0026cursor=00acc1_GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN_credit_alphanum12\u0026asset_issuer=GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN"
             },
             "prev": {
-              "href": "http://horizon-testnet.stellar.org:1337/assets?order=desc\u0026limit=10\u0026cursor=004d40_GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN_credit_alphanum12\u0026asset_issuer=GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN"
+              "href": "http://horizon-testnet.payshares.org:1337/assets?order=desc\u0026limit=10\u0026cursor=004d40_GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN_credit_alphanum12\u0026asset_issuer=GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN"
             }
           },
           "_embedded": {
@@ -1581,7 +1581,7 @@ describe("server.js tests", function () {
           }
         };
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/assets?asset_issuer=GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN&limit=1'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/assets?asset_issuer=GCOGPF7IRVXUCJZAQWXVFQEE4HAOCTDGZI2QZSMKLM5BTTGRLY6GDOJN&limit=1'))
           .returns(Promise.resolve({data: assetIssuerResponse}));
 
         this.server.assets()
@@ -1600,13 +1600,13 @@ describe("server.js tests", function () {
       let assetCodeIssuerResponse = {
         "_links": {
           "self": {
-            "href": "http://horizon-testnet.stellar.org/assets?order=asc\u0026limit=10\u0026cursor=\u0026asset_code=USD\u0026asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR"
+            "href": "http://horizon-testnet.payshares.org/assets?order=asc\u0026limit=10\u0026cursor=\u0026asset_code=USD\u0026asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR"
           },
           "next": {
-            "href": "http://horizon-testnet.stellar.org/assets?order=asc\u0026limit=10\u0026cursor=USD_GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR_credit_alphanum4\u0026asset_code=USD\u0026asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR"
+            "href": "http://horizon-testnet.payshares.org/assets?order=asc\u0026limit=10\u0026cursor=USD_GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR_credit_alphanum4\u0026asset_code=USD\u0026asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR"
           },
           "prev": {
-            "href": "http://horizon-testnet.stellar.org/assets?order=desc\u0026limit=10\u0026cursor=USD_GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR_credit_alphanum4\u0026asset_code=USD\u0026asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR"
+            "href": "http://horizon-testnet.payshares.org/assets?order=desc\u0026limit=10\u0026cursor=USD_GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR_credit_alphanum4\u0026asset_code=USD\u0026asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR"
           }
         },
         "_embedded": {
@@ -1614,7 +1614,7 @@ describe("server.js tests", function () {
             {
               "_links": {
                 "toml": {
-                  "href": "https://bakalr/.well-known/stellar.toml"
+                  "href": "https://bakalr/.well-known/payshares.toml"
                 }
               },
               "asset_type": "credit_alphanum4",
@@ -1633,7 +1633,7 @@ describe("server.js tests", function () {
       }
       it("requests the correct endpoint (asset_code then asset_issuer)", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/assets?asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR&asset_code=USD'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/assets?asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR&asset_code=USD'))
           .returns(Promise.resolve({data: assetCodeIssuerResponse}));
 
         this.server.assets()
@@ -1652,7 +1652,7 @@ describe("server.js tests", function () {
 
       it("requests the correct endpoint (asset_issuer then asset_code)", function (done) {
         this.axiosMock.expects('get')
-          .withArgs(sinon.match('https://horizon-live.stellar.org:1337/assets?asset_code=USD&asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR'))
+          .withArgs(sinon.match('https://horizon-live.payshares.org:1337/assets?asset_code=USD&asset_issuer=GBW3EZBZKRERB4JUDWGQPIBGHKJ4XPOFG2VQ2WTFR4F7TYC5WS7F3XGR'))
           .returns(Promise.resolve({data: assetCodeIssuerResponse}));
 
         this.server.assets()

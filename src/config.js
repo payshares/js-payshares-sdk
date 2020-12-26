@@ -11,13 +11,13 @@ let config = clone(defaultConfig);
  *
  * Usage node:
  * ```
- * import {Config} from 'stellar-sdk';
+ * import {Config} from 'payshares-sdk';
  * Config.setAllowHttp(true);
  * ```
  *
  * Usage browser:
  * ```
- * StellarSdk.Config.setAllowHttp(true);
+ * PaysharesSdk.Config.setAllowHttp(true);
  * ```
  * @static
  */

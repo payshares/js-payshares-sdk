@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone "https://stellar-jenkins@github.com/stellar/bower-js-stellar-sdk.git" bower
+git clone "https://payshares-jenkins@github.com/payshares/bower-js-payshares-sdk.git" bower
 
 if [ ! -d "bower" ]; then
   echo "Error cloning"
